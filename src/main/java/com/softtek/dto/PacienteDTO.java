@@ -9,6 +9,7 @@ public class PacienteDTO {
 	private Integer idPaciente;
 
 	// prueba
+	//prueba pablo
 	@NotEmpty
 	@Size(min = 3, message = "{nombres.size}")
 	private String nombres;
