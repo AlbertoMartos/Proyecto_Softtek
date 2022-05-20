@@ -8,6 +8,7 @@ import javax.validation.constraints.Size;
 public class PacienteDTO {
 	private Integer idPaciente;
 
+	// prueba
 	@NotEmpty
 	@Size(min = 3, message = "{nombres.size}")
 	private String nombres;
