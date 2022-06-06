@@ -8,7 +8,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,72 +18,70 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.softtek.dto.MedicoDTO;
+import com.softtek.dto.EspecialidadDTO;
 import com.softtek.exception.ModeloNotFoundException;
-import com.softtek.modelo.Medico;
-import com.softtek.servicio.IMedicoServicio;
+import com.softtek.modelo.Especialidad;
+import com.softtek.servicio.IEspecialidadServicio;
 
 @RestController
-@RequestMapping("/medicos")
+@RequestMapping("/especialidades")
 //@CrossOrigin(origins = "http://localhost:4200")
-public class MedicoControlador {
+public class EspecialidadControlador {
 
 	@Autowired
-	private IMedicoServicio servicio;
+	private IEspecialidadServicio servicio;
 
 	@Autowired
 	private ModelMapper mapper;
 
-	@PreAuthorize("@authServiceImpl.tieneAcceso('listar')")
-	// @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
 	@GetMapping
-	public ResponseEntity<List<MedicoDTO>> listar() throws Exception {
-		List<MedicoDTO> lista = servicio.listar().stream().map(x -> mapper.map(x, MedicoDTO.class))
+	public ResponseEntity<List<EspecialidadDTO>> listar() throws Exception {
+		List<EspecialidadDTO> lista = servicio.listar().stream().map(x -> mapper.map(x, EspecialidadDTO.class))
 				.collect(Collectors.toList());
 		return new ResponseEntity<>(lista, HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<MedicoDTO> listarPorId(@PathVariable("id") Integer id) throws Exception {
-		Medico objeto = servicio.listarPorId(id);
+	public ResponseEntity<EspecialidadDTO> listarPorId(@PathVariable("id") Integer id) throws Exception {
+		Especialidad objeto = servicio.listarPorId(id);
 
 		if (objeto == null) {
 			throw new ModeloNotFoundException("ID NO ENCONTRADO " + id);
 		}
 
-		MedicoDTO dtoResponse = mapper.map(servicio.registrar(objeto), MedicoDTO.class);
+		EspecialidadDTO dtoResponse = mapper.map(servicio.registrar(objeto), EspecialidadDTO.class);
 		return new ResponseEntity<>(dtoResponse, HttpStatus.OK);
 	}
 
 	@PostMapping
-	public ResponseEntity<MedicoDTO> registrar(@RequestBody MedicoDTO m) throws Exception {
-		Medico objeto = mapper.map(m, Medico.class);
-		Medico obj = servicio.registrar(objeto);
-		MedicoDTO dtoResponse = mapper.map(obj, MedicoDTO.class);
+	public ResponseEntity<EspecialidadDTO> registrar(@RequestBody EspecialidadDTO m) throws Exception {
+		Especialidad objeto = mapper.map(m, Especialidad.class);
+		Especialidad obj = servicio.registrar(objeto);
+		EspecialidadDTO dtoResponse = mapper.map(obj, EspecialidadDTO.class);
 
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(dtoResponse.getIdMedico()).toUri();
+				.buildAndExpand(dtoResponse.getIdEspecialidad()).toUri();
 
 		return ResponseEntity.created(location).build();
 	}
 
 	@PutMapping
-	public ResponseEntity<MedicoDTO> modificar(@RequestBody Medico m) throws Exception {
-		Medico medicoRequest = mapper.map(m, Medico.class);
-		Medico medicoConsultado = servicio.listarPorId(medicoRequest.getIdMedico());
+	public ResponseEntity<EspecialidadDTO> modificar(@RequestBody Especialidad m) throws Exception {
+		Especialidad medicoRequest = mapper.map(m, Especialidad.class);
+		Especialidad medicoConsultado = servicio.listarPorId(medicoRequest.getIdEspecialidad());
 
 		if (medicoConsultado == null) {
-			throw new ModeloNotFoundException("ID NO ENCONTRADO " + medicoConsultado.getIdMedico());
+			throw new ModeloNotFoundException("ID NO ENCONTRADO " + medicoConsultado.getIdEspecialidad());
 		}
 
-		Medico BBDD = servicio.modificar(medicoRequest);
-		MedicoDTO medicoResponse = mapper.map(BBDD, MedicoDTO.class);
+		Especialidad BBDD = servicio.modificar(medicoRequest);
+		EspecialidadDTO medicoResponse = mapper.map(BBDD, EspecialidadDTO.class);
 		return new ResponseEntity<>(medicoResponse, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> eliminar(@PathVariable("id") Integer id) throws Exception {
-		Medico objeto = servicio.listarPorId(id);
+		Especialidad objeto = servicio.listarPorId(id);
 		if (objeto == null) {
 			throw new ModeloNotFoundException("ID NO ENCONTRADO " + id);
 		}

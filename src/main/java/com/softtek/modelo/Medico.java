@@ -18,7 +18,7 @@ public class Medico {
 	@Column(name = "apellidos", nullable = false, length = 70)
 	private String apellidos;
 
-	@Column(name = "cedula", nullable = false, length = 12)
+	@Column(name = "cedula", nullable = false, length = 12, unique = true)
 	private String cedula;
 
 	@Column(name = "foto_url", nullable = true, length = 255)
