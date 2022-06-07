@@ -6,7 +6,6 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 
 public class ConsultaDTO {
-
 	private Integer idConsulta;
 	@NotNull
 	private PacienteDTO paciente;

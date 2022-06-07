@@ -7,16 +7,16 @@ import javax.validation.constraints.NotNull;
 public class ConsultaListaExamenDTO {
 
 	@NotNull
-	private ConsultaResumenDTO consulta;
+	private ConsultaDTO consulta;
 
 	@NotNull
 	private List<AnaliticaDTO> lstExamen;
 
-	public ConsultaResumenDTO getConsulta() {
+	public ConsultaDTO getConsulta() {
 		return consulta;
 	}
 
-	public void setConsulta(ConsultaResumenDTO consulta) {
+	public void setConsulta(ConsultaDTO consulta) {
 		this.consulta = consulta;
 	}
 

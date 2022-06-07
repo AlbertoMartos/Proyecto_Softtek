@@ -33,11 +33,11 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 				.antMatchers("/consultas/**").permitAll()
 				.antMatchers("/especialidades/**").permitAll()
 				.antMatchers("/analiticas/**").permitAll()
-				.antMatchers("/medicos/**").authenticated()
+				.antMatchers("/medicos/**").permitAll()
 				.antMatchers("/menus/**").authenticated()
 				.antMatchers("/tokens/anular/**").permitAll()
 				.antMatchers("/tokens/**").authenticated()
-				.antMatchers("/consultaexamenes/**").authenticated()
+				.antMatchers("/consultaexamenes/**").permitAll()
 				.antMatchers("/pacientes/**").permitAll();
 
 	}

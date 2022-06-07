@@ -5,7 +5,6 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class DetalleConsultaDTO {
-
 	private Integer idDetalle;
 
 	@JsonIgnore

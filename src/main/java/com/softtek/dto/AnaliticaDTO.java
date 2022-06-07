@@ -16,9 +16,11 @@ public class AnaliticaDTO {
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public String toString() {
-		return "AnaliticaDTO [idAnalitica=" + idAnalitica + ", descripcion=" + descripcion + ", nombre=" + nombre + "]";
+	public AnaliticaDTO(Integer idAnalitica, @NotNull String descripcion, @NotNull String nombre) {
+		super();
+		this.idAnalitica = idAnalitica;
+		this.descripcion = descripcion;
+		this.nombre = nombre;
 	}
 
 	public Integer getIdAnalitica() {
@@ -44,4 +46,10 @@ public class AnaliticaDTO {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+
+	@Override
+	public String toString() {
+		return "AnaliticaDTO [idAnalitica=" + idAnalitica + ", descripcion=" + descripcion + ", nombre=" + nombre + "]";
+	}
+
 }

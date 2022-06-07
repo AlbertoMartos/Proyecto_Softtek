@@ -4,28 +4,19 @@ import javax.validation.constraints.NotNull;
 
 public class ConsultaResumenDTO {
 
+	private Integer cantidad;
+
 	@NotNull
 	private String fecha;
 
-	@NotNull
-	private Integer cantidad;
-
-	public ConsultaResumenDTO(@NotNull String fecha, @NotNull Integer cantidad) {
+	public ConsultaResumenDTO(Integer cantidad, @NotNull String fecha) {
 		super();
-		this.fecha = fecha;
 		this.cantidad = cantidad;
+		this.fecha = fecha;
 	}
 
 	public ConsultaResumenDTO() {
-		// TODO Auto-generated constructor stub
-	}
-
-	public String getFecha() {
-		return fecha;
-	}
-
-	public void setFecha(String fecha) {
-		this.fecha = fecha;
+		super();
 	}
 
 	public Integer getCantidad() {
@@ -36,9 +27,17 @@ public class ConsultaResumenDTO {
 		this.cantidad = cantidad;
 	}
 
+	public String getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(String fecha) {
+		this.fecha = fecha;
+	}
+
 	@Override
 	public String toString() {
-		return "ConsultaDTO [fecha=" + fecha + ", cantidad=" + cantidad + "]";
+		return "ConsultaDTO [cantidad=" + cantidad + ", fecha=" + fecha + "]";
 	}
 
 }

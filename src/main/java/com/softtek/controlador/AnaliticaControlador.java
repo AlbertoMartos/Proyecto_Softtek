@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,7 +27,7 @@ import com.softtek.servicio.IAnaliticaServicio;
 
 @RestController
 @RequestMapping("/analiticas")
-//@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins="http://localhost:4200")
 public class AnaliticaControlador {
 
 	@Autowired
@@ -44,43 +46,39 @@ public class AnaliticaControlador {
 	@GetMapping("/{id}")
 	public ResponseEntity<AnaliticaDTO> listarPorId(@PathVariable("id") Integer id) throws Exception {
 		Analitica objeto = servicio.listarPorId(id);
-
 		if (objeto == null) {
 			throw new ModeloNotFoundException("ID NO ENCONTRADO " + id);
 		}
-
-		AnaliticaDTO dtoResponse = mapper.map(servicio.registrar(objeto), AnaliticaDTO.class);
+		AnaliticaDTO dtoResponse = mapper.map(objeto, AnaliticaDTO.class);
 		return new ResponseEntity<>(dtoResponse, HttpStatus.OK);
 	}
 
 	@PostMapping
-	public ResponseEntity<AnaliticaDTO> registrar(@RequestBody AnaliticaDTO m) throws Exception {
-		Analitica objeto = mapper.map(m, Analitica.class);
+	public ResponseEntity<Void> registrar(@Valid @RequestBody AnaliticaDTO a) throws Exception {
+		Analitica objeto = mapper.map(a, Analitica.class);
 		Analitica obj = servicio.registrar(objeto);
 		AnaliticaDTO dtoResponse = mapper.map(obj, AnaliticaDTO.class);
 
+		// Bloque de localizacion formar una url localhost:8080/pacientes/1
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(dtoResponse.getIdAnalitica()).toUri();
-
 		return ResponseEntity.created(location).build();
 	}
 
 	@PutMapping
-	public ResponseEntity<AnaliticaDTO> modificar(@RequestBody Analitica m) throws Exception {
-		Analitica medicoRequest = mapper.map(m, Analitica.class);
-		Analitica medicoConsultado = servicio.listarPorId(medicoRequest.getIdAnalitica());
-
-		if (medicoConsultado == null) {
-			throw new ModeloNotFoundException("ID NO ENCONTRADO " + medicoConsultado.getIdAnalitica());
+	public ResponseEntity<AnaliticaDTO> modificar(@Valid @RequestBody AnaliticaDTO a) throws Exception {
+		Analitica analiticaRequest = mapper.map(a, Analitica.class);
+		Analitica analiticaConsultado = servicio.listarPorId(analiticaRequest.getIdAnalitica());
+		if (analiticaConsultado == null) {
+			throw new ModeloNotFoundException("ID NO ENCONTRADO " + analiticaRequest.getIdAnalitica());
 		}
-
-		Analitica BBDD = servicio.modificar(medicoRequest);
-		AnaliticaDTO medicoResponse = mapper.map(BBDD, AnaliticaDTO.class);
-		return new ResponseEntity<>(medicoResponse, HttpStatus.OK);
+		Analitica BBDD = servicio.modificar(analiticaRequest);
+		AnaliticaDTO analiticaResponse = mapper.map(BBDD, AnaliticaDTO.class);
+		return new ResponseEntity<>(analiticaResponse, HttpStatus.OK);
 	}
 
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> eliminar(@PathVariable("id") Integer id) throws Exception {
+	@DeleteMapping("{id}")
+	public ResponseEntity<Void> eliminar(@PathVariable Integer id) throws Exception {
 		Analitica objeto = servicio.listarPorId(id);
 		if (objeto == null) {
 			throw new ModeloNotFoundException("ID NO ENCONTRADO " + id);
